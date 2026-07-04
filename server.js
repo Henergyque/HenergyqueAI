@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.all('/api/chat',                   require('./api/chat'));
 app.all('/api/contact',                require('./api/contact'));
 app.all('/api/warmup',                 require('./api/warmup'));
+app.all('/api/feedback',               require('./api/feedback'));
 app.all('/api/debug',                  require('./api/debug'));
 app.all('/api/stripe/checkout',        require('./api/stripe/checkout'));
 app.all('/api/stripe/create-subscription', require('./api/stripe/create-subscription'));

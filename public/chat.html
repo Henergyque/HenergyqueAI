@@ -98,6 +98,12 @@
                     </div>
                   </sc-if>
                 </sc-for>
+                <sc-if value="{{ msg.avisActif }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; gap:6px; margin-top:2px">
+                    <button onClick="{{ msg.avisPositif }}" style="background:transparent; border:1px solid {{ msg.bordPositif }}; border-radius:8px; padding:4px 10px; color:{{ msg.couleurPositif }}; font-size:14px; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#6fce96; border-color:rgba(111,206,150,0.5)">👍</button>
+                    <button onClick="{{ msg.avisNegatif }}" style="background:transparent; border:1px solid {{ msg.bordNegatif }}; border-radius:8px; padding:4px 10px; color:{{ msg.couleurNegatif }}; font-size:14px; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">👎</button>
+                  </div>
+                </sc-if>
               </div>
             </div>
           </sc-if>
@@ -146,7 +152,8 @@ class Component extends DCLogic {
     session: null,
     profil: null,
     usageJour: 0,
-    messages: [Component.ACCUEIL]
+    messages: [Component.ACCUEIL],
+    avisEtats: {}
   };
 
   listRef = React.createRef();
@@ -327,6 +334,28 @@ segmenter(texte) {
     }, 24);
   }
 
+  donnerAvis = async (index, vote) => {
+    if (this.state.avisEtats[index]) return;
+    const avisEtats = { ...this.state.avisEtats, [index]: vote };
+    this.setState({ avisEtats });
+    const msg = this.state.messages[index];
+    const prev = this.state.messages[index - 1];
+    try {
+      let token = null;
+      if (window.supabaseClient) {
+        const { data } = await window.supabaseClient.auth.getSession();
+        token = data?.session?.access_token ?? null;
+      }
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ vote, question: prev?.texte ?? '', reponse: msg.texte })
+      });
+    } catch (_) {}
+  };
+
   copierCode = (contenu, cle) => {
     navigator.clipboard.writeText(contenu).then(() => {
       this.copiesEtat[cle] = true;
@@ -356,7 +385,21 @@ segmenter(texte) {
           libelleCopie: this.copiesEtat[cle] ? '✓ Copié' : 'Copier'
         };
       });
-      return { estUtilisateur, estAssistant: !estUtilisateur, texte: m.texte, segments };
+      const avisEtat = this.state.avisEtats[i];
+      const estDernierMessage = i === this.state.messages.length - 1;
+      return {
+        estUtilisateur,
+        estAssistant: !estUtilisateur,
+        texte: m.texte,
+        segments,
+        avisActif: !estUtilisateur && !(estDernierMessage && this.state.enTrainDecrire),
+        avisPositif: () => this.donnerAvis(i, 'positif'),
+        avisNegatif: () => this.donnerAvis(i, 'negatif'),
+        couleurPositif: avisEtat === 'negatif' ? '#2a2a2e' : avisEtat === 'positif' ? '#6fce96' : '#5a5a66',
+        couleurNegatif: avisEtat === 'positif' ? '#2a2a2e' : avisEtat === 'negatif' ? '#e07a7a' : '#5a5a66',
+        bordPositif: avisEtat === 'negatif' ? 'rgba(255,255,255,0.04)' : avisEtat === 'positif' ? 'rgba(111,206,150,0.5)' : 'rgba(255,255,255,0.1)',
+        bordNegatif: avisEtat === 'positif' ? 'rgba(255,255,255,0.04)' : avisEtat === 'negatif' ? 'rgba(224,122,122,0.5)' : 'rgba(255,255,255,0.1)',
+      };
     });
 
     if (!this._frappe) {
