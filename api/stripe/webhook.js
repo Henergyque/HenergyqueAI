@@ -11,9 +11,6 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-/* Vercel lit le body en stream — on a besoin du buffer brut pour la signature Stripe */
-export const config = { api: { bodyParser: false } };
-
 async function readRawBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];

@@ -2,6 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+// Webhook Stripe : body brut (pas parsé)
+app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
+app.all('/api/stripe/webhook', require('./api/stripe/webhook'));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -11,7 +15,6 @@ app.all('/api/contact',                require('./api/contact'));
 app.all('/api/warmup',                 require('./api/warmup'));
 app.all('/api/debug',                  require('./api/debug'));
 app.all('/api/stripe/checkout',        require('./api/stripe/checkout'));
-app.all('/api/stripe/webhook',         require('./api/stripe/webhook'));
 app.all('/api/stripe/create-subscription', require('./api/stripe/create-subscription'));
 
 // Clean URL rewrites
