@@ -1,0 +1,10 @@
+HenergyqueAI/
+HenergyqueAI_GGUF_gguf/
+unsloth_env/
+node_modules/
+*.gguf
+*.bin
+*.safetensors
+__pycache__/
+.env.local
+modal_server/

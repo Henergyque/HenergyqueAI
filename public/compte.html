@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compte — HenergyqueAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #050507; }
+    * { box-sizing: border-box; }
+    ::selection { background: rgba(86,200,245,0.28); }
+    @keyframes hentree2 { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  </style>
+</helmet>
+
+<div style="min-height:100svh; display:flex; flex-direction:column; background:#050507; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:14px 40px; background:rgba(5,5,7,0.7); backdrop-filter:blur(20px) saturate(1.4); -webkit-backdrop-filter:blur(20px) saturate(1.4); border-bottom:1px solid rgba(255,255,255,0.06)">
+    <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:#f2f3f7">
+      <img src="assets/logo-papillon.png" alt="HenergyqueAI" style="width:34px; height:34px; object-fit:contain">
+      <span style="font-weight:600; font-size:16px; letter-spacing:-0.01em">HenergyqueAI</span>
+    </a>
+    <div style="display:flex; align-items:center; gap:28px; row-gap:8px; flex-wrap:wrap; font-size:13.5px; font-weight:500">
+      <a href="/chat" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Chat</a>
+      <a href="/documentation" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Documentation</a>
+      <a href="/tarifs" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Tarifs</a>
+      <a href="/statut" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut</a>
+      <a href="/contact" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ══════════ COMPTE ══════════ -->
+  <main data-screen-label="Compte" style="flex:1; display:flex; align-items:center; justify-content:center; padding:48px 24px">
+
+    <!-- Tableau de bord (connecté) -->
+    <sc-if value="{{ connecte }}" hint-placeholder-val="{{ false }}">
+      <div style="width:min(880px, 100%); animation:hentree2 0.8s cubic-bezier(0.16,1,0.3,1) both">
+        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:28px">
+          <img src="assets/logo-papillon.png" alt="" style="width:52px; height:52px; object-fit:contain">
+          <div>
+            <h1 style="font-size:clamp(26px,3.5vw,34px); font-weight:700; letter-spacing:-0.03em; margin:0">Bonjour, {{ nomSession }}.</h1>
+            <p style="color:#9a9aa6; font-size:14px; margin:2px 0 0">{{ emailSession }}</p>
+          </div>
+          <button onClick="{{ deconnecter }}" style="margin-left:auto; background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:9px 18px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Se déconnecter</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:16px">
+          <!-- Plan -->
+          <div style="border:1px solid {{ bordurePlan }}; border-radius:18px; padding:24px 26px; background:#0b0b10">
+            <p style="margin:0 0 10px; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Plan actuel</p>
+            <p style="margin:0 0 4px; font-size:26px; font-weight:700; letter-spacing:-0.02em; color:{{ couleurPlan }}">{{ nomPlan }}</p>
+            <p style="margin:0 0 18px; font-size:13.5px; color:#9a9aa6">{{ descPlan }}</p>
+            <sc-if value="{{ estGratuit }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ ouvrirPaiement }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:9px 20px; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">Passer en Pro — 19 €/mois</button>
+            </sc-if>
+            <sc-if value="{{ estPro }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ gererAbonnement }}" style="background:transparent; border:1px solid rgba(255,255,255,0.14); border-radius:999px; padding:9px 20px; color:#9a9aa6; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Gérer l'abonnement</button>
+            </sc-if>
+          </div>
+          <!-- Usage -->
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px 26px; background:#0b0b10">
+            <p style="margin:0 0 10px; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Usage aujourd'hui</p>
+            <p style="margin:0 0 14px; font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ usageJour }}<span style="font-size:15px; color:#5a5a66; font-weight:500"> {{ suffixeUsage }}</span></p>
+            <sc-if value="{{ estGratuit }}" hint-placeholder-val="{{ true }}">
+              <div style="height:8px; border-radius:999px; background:rgba(255,255,255,0.06); overflow:hidden; margin-bottom:12px">
+                <div style="height:100%; border-radius:999px; background:linear-gradient(90deg,#56c8f5,#a78bfa); width:{{ usagePourcent }}; transition:width 0.6s cubic-bezier(0.16,1,0.3,1)"></div>
+              </div>
+              <p style="margin:0; font-size:13px; color:#5a5a66">Le compteur se remet à zéro chaque jour à minuit.</p>
+            </sc-if>
+            <sc-if value="{{ estPro }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0; font-size:13px; color:#5a5a66">Aucune limite avec le plan Pro.</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <!-- ══ Panneau paiement Stripe Elements ══ -->
+        <sc-if value="{{ enPaiement }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius:18px; padding:1px; background:linear-gradient(140deg, rgba(86,200,245,0.6), rgba(167,139,250,0.6)); margin-bottom:16px">
+            <div style="border-radius:17px; padding:24px 26px; background:#0d0d14">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px">
+                <p style="margin:0; font-size:16px; font-weight:700">Passer en Pro — 19 €/mois</p>
+                <button onClick="{{ fermerPaiement }}" style="margin-left:auto; background:transparent; border:none; color:#5a5a66; font-size:16px; cursor:pointer; padding:4px 8px; transition:color 0.2s" style-hover="color:#f2f3f7">✕</button>
+              </div>
+
+              <!-- Chargement du clientSecret -->
+              <sc-if value="{{ chargementPaiement }}" hint-placeholder-val="{{ true }}">
+                <p style="margin:0 0 16px; font-size:14px; color:#5a5a66">Chargement du formulaire de paiement…</p>
+              </sc-if>
+
+              <!-- 3 champs Stripe Elements (montés via JS dans componentDidUpdate) -->
+              <sc-if value="{{ formulairePret }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:12px">
+                  <div style="display:flex; flex-direction:column; gap:6px">
+                    <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">Numéro de carte</label>
+                    <div id="hq-stripe-card-number" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; min-height:44px"></div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:6px">
+                    <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">Expiration</label>
+                    <div id="hq-stripe-card-expiry" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; min-height:44px"></div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:6px">
+                    <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">CVC</label>
+                    <div id="hq-stripe-card-cvc" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; min-height:44px"></div>
+                  </div>
+                </div>
+                <sc-if value="{{ erreurPaiement }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0 0 12px; font-size:13px; color:#e07a7a">{{ erreurPaiement }}</p>
+                </sc-if>
+                <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+                  <button onClick="{{ payer }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:11px 26px; font-weight:600; font-size:14px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">{{ libellePayer }}</button>
+                  <button onClick="{{ ouvrirCheckout }}" style="background:transparent; border:none; color:#9a9aa6; font-size:13px; font-family:'Instrument Sans',sans-serif; cursor:pointer; padding:0; transition:color 0.2s; text-decoration:underline" style-hover="color:#f2f3f7">Payer autrement (Stripe Checkout) →</button>
+                </div>
+                <p style="margin:12px 0 0; font-size:12px; color:#5a5a66">🔒 Paiement sécurisé par Stripe — vos données de carte ne transitent jamais par nos serveurs.</p>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- Message succès paiement -->
+        <sc-if value="{{ paiementOk }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid rgba(86,200,245,0.35); border-radius:18px; padding:18px 24px; background:rgba(86,200,245,0.06); margin-bottom:16px; display:flex; align-items:center; gap:12px">
+            <span style="font-size:20px">✓</span>
+            <p style="margin:0; font-size:14px; color:#56c8f5; font-weight:600">Abonnement Pro activé — bienvenue dans la vitesse illimitée.</p>
+          </div>
+        </sc-if>
+
+        <!-- Clé API -->
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px 26px; background:#0b0b10; margin-bottom:16px">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px">
+            <p style="margin:0; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Clé API</p>
+            <a href="/documentation#authentification" style="margin-left:auto; font-size:13px; color:#56c8f5; text-decoration:none; transition:opacity 0.2s" style-hover="opacity:0.75">Comment l'utiliser →</a>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+            <code style="flex:1; min-width:240px; font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:12px 16px; overflow-x:auto; white-space:nowrap">{{ cleAffichee }}</code>
+            <button onClick="{{ basculerCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#f2f3f7; border-color:rgba(255,255,255,0.3)">{{ libelleVoir }}</button>
+            <button onClick="{{ copierCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#56c8f5; border-color:rgba(86,200,245,0.5)">{{ libelleCopie }}</button>
+            <button onClick="{{ regenererCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Régénérer</button>
+          </div>
+          <p style="margin:12px 0 0; font-size:13px; color:#5a5a66">Régénérer la clé invalide immédiatement l'ancienne. Ne partagez jamais votre clé.</p>
+        </div>
+
+        <!-- Raccourcis -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+          <a href="/chat" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(86,200,245,0.45)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Ouvrir le chat →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">Reprenez vos conversations.</p>
+          </a>
+          <a href="/documentation" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(167,139,250,0.45)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Documentation →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">API, SDKs, extension IDE.</p>
+          </a>
+          <a href="/contact" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(255,255,255,0.3)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Support →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">Une question ? Écrivez-nous.</p>
+          </a>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Formulaire (déconnecté) -->
+    <sc-if value="{{ pasConnecte }}" hint-placeholder-val="{{ true }}">
+      <div style="width:min(440px, 100%); animation:hentree2 0.8s cubic-bezier(0.16,1,0.3,1) both">
+        <div style="text-align:center; margin-bottom:28px">
+          <img src="assets/logo-papillon.png" alt="" style="width:60px; height:60px; object-fit:contain; margin-bottom:12px">
+          <h1 style="font-size:clamp(28px,4vw,36px); font-weight:700; letter-spacing:-0.035em; margin:0">{{ titre }}</h1>
+        </div>
+
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:22px; background:#0b0b10; padding:32px 28px">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; background:rgba(255,255,255,0.04); border-radius:999px; padding:4px; margin-bottom:26px">
+            <button onClick="{{ modeInscription }}" style="background:{{ fondOngletInscription }}; color:{{ couleurOngletInscription }}; border:none; border-radius:999px; padding:9px; font-family:'Instrument Sans',sans-serif; font-size:13.5px; font-weight:600; cursor:pointer; transition:background 0.25s, color 0.25s">Créer un compte</button>
+            <button onClick="{{ modeConnexion }}" style="background:{{ fondOngletConnexion }}; color:{{ couleurOngletConnexion }}; border:none; border-radius:999px; padding:9px; font-family:'Instrument Sans',sans-serif; font-size:13.5px; font-weight:600; cursor:pointer; transition:background 0.25s, color 0.25s">Se connecter</button>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <sc-if value="{{ estInscription }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-direction:column; gap:7px">
+                <label style="font-size:13px; font-weight:600; color:#9a9aa6">Nom</label>
+                <input value="{{ nom }}" onChange="{{ surNom }}" placeholder="Votre nom" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+              </div>
+            </sc-if>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <label style="font-size:13px; font-weight:600; color:#9a9aa6">E-mail</label>
+              <input value="{{ email }}" onChange="{{ surEmail }}" placeholder="vous@exemple.com" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <label style="font-size:13px; font-weight:600; color:#9a9aa6">Mot de passe</label>
+              <input type="password" value="{{ mdp }}" onChange="{{ surMdp }}" onKeyDown="{{ surTouche }}" placeholder="8 caractères minimum" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+            </div>
+            <sc-if value="{{ erreur }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0; font-size:13.5px; color:#e07a7a">{{ erreur }}</p>
+            </sc-if>
+            <button onClick="{{ valider }}" style="margin-top:4px; background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:14px; font-weight:600; font-size:15px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s; position:relative" style-hover="opacity:0.88">
+              <sc-if value="{{ chargement }}" hint-placeholder-val="{{ false }}">
+                <span style="display:inline-block; width:14px; height:14px; border:2px solid rgba(0,0,0,0.3); border-top-color:#050507; border-radius:50%; animation:spin 0.7s linear infinite; margin-right:8px; vertical-align:middle"></span>
+              </sc-if>
+              {{ libelleBouton }}
+            </button>
+          </div>
+        </div>
+        <p style="text-align:center; font-size:12px; color:#5a5a66; margin-top:16px">En créant un compte, vous acceptez nos <a href="/cgu" style="color:#56c8f5; text-decoration:none">CGU</a> et notre <a href="/confidentialite" style="color:#56c8f5; text-decoration:none">politique de confidentialité</a>.</p>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    mode: 'inscription',
+    nom: '', email: '', mdp: '', erreur: '', chargement: false,
+    session: null, profil: null, usageJour: 0,
+    cleVisible: false, copie: false, paiementOk: false,
+    runtimePret: false,
+    /* paiement */
+    enPaiement: false, chargementPaiement: false, formulairePret: false,
+    erreurPaiement: '', chargementPayer: false,
+  };
+
+  /* refs Stripe internes (pas dans le state — pas besoin de re-render) */
+  _clientSecret = null;
+  _stripeElMounted = false;
+  _cardNumber = null;
+  _cardExpiry = null;
+  _cardCvc = null;
+
+  componentDidMount() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('paiement') === 'ok') this.setState({ paiementOk: true });
+
+    const init = () => {
+      this.setState({ runtimePret: true });
+      window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (session) {
+          const profil = await window.hqAuth.getProfil();
+          const usageJour = await window.hqAuth.getUsageJour();
+          this.setState({ session, profil, usageJour });
+        } else {
+          this.setState({ session: null, profil: null, usageJour: 0 });
+        }
+      });
+      window.hqAuth.getSession().then(async (session) => {
+        if (session) {
+          const profil = await window.hqAuth.getProfil();
+          const usageJour = await window.hqAuth.getUsageJour();
+          this.setState({ session, profil, usageJour });
+        }
+      });
+    };
+
+    if (window.hqAuth) { init(); }
+    else { document.addEventListener('hq-runtime-ready', init, { once: true }); }
+  }
+
+  surNom = (e) => this.setState({ nom: e.target.value });
+  surEmail = (e) => this.setState({ email: e.target.value });
+  surMdp = (e) => this.setState({ mdp: e.target.value });
+  surTouche = (e) => { if (e.key === 'Enter') this.valider(); };
+
+  valider = async () => {
+    const { mode, nom, email, mdp } = this.state;
+    const mail = email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) {
+      this.setState({ erreur: 'Adresse e-mail invalide.' }); return;
+    }
+    if (mdp.length < 8) {
+      this.setState({ erreur: 'Le mot de passe doit faire au moins 8 caractères.' }); return;
+    }
+    if (mode === 'inscription' && !nom.trim()) {
+      this.setState({ erreur: 'Merci d\'indiquer votre nom.' }); return;
+    }
+    this.setState({ erreur: '', chargement: true });
+    try {
+      if (mode === 'inscription') {
+        await window.hqAuth.inscrire(mail, mdp, nom.trim());
+        this.setState({ erreur: 'Compte créé ! Vérifiez votre email pour le confirmer.' });
+      } else {
+        await window.hqAuth.connecter(mail, mdp);
+      }
+    } catch (err) {
+      const msg = err.message || 'Une erreur est survenue.';
+      this.setState({ erreur: msg.includes('Invalid login') ? 'E-mail ou mot de passe incorrect.' : msg });
+    }
+    this.setState({ chargement: false, mdp: '' });
+  };
+
+  deconnecter = async () => {
+    await window.hqAuth.deconnecter();
+  };
+
+  ouvrirPaiement = async () => {
+    this.setState({ enPaiement: true, chargementPaiement: true, formulairePret: false, erreurPaiement: '' });
+    try {
+      const { clientSecret } = await window.hqAuth.creerSubscription();
+      this._clientSecret = clientSecret;
+      this._stripeElMounted = false;
+      this.setState({ chargementPaiement: false, formulairePret: true });
+    } catch (err) {
+      this.setState({ chargementPaiement: false, erreurPaiement: err.message });
+    }
+  };
+
+  fermerPaiement = () => {
+    this._demontrerStripe();
+    this._clientSecret = null;
+    this.setState({ enPaiement: false, formulairePret: false, erreurPaiement: '', chargementPayer: false });
+  };
+
+  _monterStripe() {
+    if (this._stripeElMounted) return;
+    const stripe = window._stripeInstance;
+    if (!stripe) return;
+    const numEl = document.getElementById('hq-stripe-card-number');
+    const expEl = document.getElementById('hq-stripe-card-expiry');
+    const cvcEl = document.getElementById('hq-stripe-card-cvc');
+    if (!numEl || !expEl || !cvcEl) return;
+
+    const style = {
+      base: {
+        color: '#f2f3f7',
+        fontFamily: '"Instrument Sans", sans-serif',
+        fontSize: '13.5px',
+        fontSmoothing: 'antialiased',
+        '::placeholder': { color: '#5a5a66' },
+      },
+      invalid: { color: '#e07a7a', iconColor: '#e07a7a' },
+    };
+
+    const elements = stripe.elements();
+    this._cardNumber = elements.create('cardNumber', { style, showIcon: true });
+    this._cardExpiry = elements.create('cardExpiry', { style });
+    this._cardCvc    = elements.create('cardCvc',    { style });
+
+    this._cardNumber.mount(numEl);
+    this._cardExpiry.mount(expEl);
+    this._cardCvc.mount(cvcEl);
+    this._stripeElMounted = true;
+  }
+
+  _demontrerStripe() {
+    if (this._cardNumber) { this._cardNumber.unmount(); this._cardNumber = null; }
+    if (this._cardExpiry) { this._cardExpiry.unmount(); this._cardExpiry = null; }
+    if (this._cardCvc)    { this._cardCvc.unmount();    this._cardCvc = null; }
+    this._stripeElMounted = false;
+  }
+
+  componentDidUpdate() {
+    if (this.state.formulairePret && !this._stripeElMounted) {
+      this._monterStripe();
+    }
+  }
+
+  payer = async () => {
+    if (!this._clientSecret || !this._cardNumber) return;
+    this.setState({ chargementPayer: true, erreurPaiement: '' });
+    const stripe = window._stripeInstance;
+    const { error } = await stripe.confirmCardPayment(this._clientSecret, {
+      payment_method: { card: this._cardNumber },
+    });
+    if (error) {
+      this.setState({ erreurPaiement: error.message, chargementPayer: false });
+    } else {
+      /* Le webhook Stripe mettra le plan à jour dans Supabase.
+         On attend 1s puis on recharge le profil pour refléter le changement. */
+      setTimeout(async () => {
+        const profil = await window.hqAuth.getProfil();
+        this._demontrerStripe();
+        this._clientSecret = null;
+        this.setState({ profil, enPaiement: false, formulairePret: false, paiementOk: true, chargementPayer: false });
+      }, 1200);
+    }
+  };
+
+  ouvrirCheckout = async () => {
+    try { await window.hqAuth.ouvrirCheckoutStripe(); }
+    catch (err) { this.setState({ erreurPaiement: err.message }); }
+  };
+
+  gererAbonnement = () => {
+    window.open('https://billing.stripe.com/p/login/', '_blank');
+  };
+
+  basculerCle = () => this.setState({ cleVisible: !this.state.cleVisible });
+
+  copierCle = () => {
+    const cle = this.state.profil?.api_key || '';
+    if (!cle) return;
+    navigator.clipboard.writeText(cle).then(() => {
+      this.setState({ copie: true });
+      setTimeout(() => this.setState({ copie: false }), 1600);
+    });
+  };
+
+  regenererCle = async () => {
+    if (!this.state.session) return;
+    const newKey = 'hq_live_' + Array.from(crypto.getRandomValues(new Uint8Array(12)))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+    await window.supabaseClient.from('profiles')
+      .update({ api_key: newKey })
+      .eq('id', this.state.session.user.id);
+    const profil = { ...this.state.profil, api_key: newKey };
+    this.setState({ profil, cleVisible: true, copie: false });
+  };
+
+  renderVals() {
+    const { session, profil, usageJour, cleVisible, copie, paiementOk, chargement } = this.state;
+    const inscription = this.state.mode === 'inscription';
+    const pro = profil?.plan === 'pro';
+    const cle = profil?.api_key || '';
+    const LIMITE = 20;
+    const pct = Math.min(100, Math.round(usageJour / LIMITE * 100)) + '%';
+
+    return {
+      connecte: !!session,
+      pasConnecte: !session,
+      paiementOk,
+      nomSession: profil?.name || session?.user?.email?.split('@')[0] || '',
+      emailSession: session?.user?.email || '',
+
+      estGratuit: !pro,
+      estPro: pro,
+      nomPlan: pro ? 'Pro' : 'Gratuit',
+      couleurPlan: pro ? '#56c8f5' : '#f2f3f7',
+      bordurePlan: pro ? 'rgba(86,200,245,0.35)' : 'rgba(255,255,255,0.08)',
+      descPlan: pro ? 'Requêtes illimitées · extension IDE · priorité' : `${LIMITE} requêtes / jour · modèle 7B`,
+      suffixeUsage: pro ? 'requêtes (illimité)' : `/ ${LIMITE} requêtes`,
+      usageJour,
+      usagePourcent: pct,
+
+      /* paiement */
+      enPaiement: this.state.enPaiement,
+      chargementPaiement: this.state.chargementPaiement,
+      formulairePret: this.state.formulairePret,
+      erreurPaiement: this.state.erreurPaiement,
+      libellePayer: this.state.chargementPayer ? 'Traitement en cours…' : 'Payer 19 € et activer Pro',
+      ouvrirPaiement: this.ouvrirPaiement,
+      fermerPaiement: this.fermerPaiement,
+      payer: this.payer,
+      ouvrirCheckout: this.ouvrirCheckout,
+      gererAbonnement: this.gererAbonnement,
+
+      cleAffichee: cleVisible ? cle : 'hq_live_••••••••••••••••••••••••',
+      libelleVoir: cleVisible ? 'Masquer' : 'Afficher',
+      libelleCopie: copie ? '✓ Copié' : 'Copier',
+      basculerCle: this.basculerCle,
+      copierCle: this.copierCle,
+      regenererCle: this.regenererCle,
+
+      estInscription: inscription,
+      titre: inscription ? 'Créez votre compte.' : 'Bon retour.',
+      libelleBouton: inscription ? 'Créer mon compte' : 'Se connecter',
+      chargement,
+      nom: this.state.nom,
+      email: this.state.email,
+      mdp: this.state.mdp,
+      erreur: this.state.erreur,
+      surNom: this.surNom,
+      surEmail: this.surEmail,
+      surMdp: this.surMdp,
+      surTouche: this.surTouche,
+      valider: this.valider,
+      deconnecter: this.deconnecter,
+      modeInscription: () => this.setState({ mode: 'inscription', erreur: '' }),
+      modeConnexion: () => this.setState({ mode: 'connexion', erreur: '' }),
+      fondOngletInscription: inscription ? '#f2f3f7' : 'transparent',
+      couleurOngletInscription: inscription ? '#050507' : '#9a9aa6',
+      fondOngletConnexion: !inscription ? '#f2f3f7' : 'transparent',
+      couleurOngletConnexion: !inscription ? '#050507' : '#9a9aa6',
+    };
+  }
+}
+</script>
+<script src="./hq-runtime.js"></script>
+</body>
+</html>

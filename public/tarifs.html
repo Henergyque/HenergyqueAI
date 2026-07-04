@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarifs — HenergyqueAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #050507; }
+    * { box-sizing: border-box; }
+    ::selection { background: rgba(86,200,245,0.28); }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:#050507; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav style="position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:14px 40px; transition:background 0.4s ease, border-color 0.4s ease; background:{{ navFond }}; backdrop-filter:{{ navFlou }}; -webkit-backdrop-filter:{{ navFlou }}; border-bottom:1px solid {{ navBordure }}">
+    <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:#f2f3f7">
+      <img src="assets/logo-papillon.png" alt="HenergyqueAI" style="width:34px; height:34px; object-fit:contain; position:relative; z-index:1">
+      <span style="font-weight:600; font-size:16px; letter-spacing:-0.01em; display:inline-block; transition:transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; transform:{{ navDecalage }}; opacity:{{ navOpacite }}">HenergyqueAI</span>
+    </a>
+    <div style="display:flex; align-items:center; gap:28px; row-gap:8px; flex-wrap:wrap; font-size:13.5px; font-weight:500; transition:opacity 0.4s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1); opacity:{{ navOpacite }}; transform:{{ navMenuDecalage }}; pointer-events:{{ navPointeurs }}">
+      <a href="/chat" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Chat</a>
+      <a href="/documentation" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Documentation</a>
+      <a href="/tarifs" style="color:#f2f3f7; text-decoration:none">Tarifs</a>
+      <a href="/statut" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut</a>
+      <a href="/contact" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+    </div>
+  </nav>
+
+  <main data-screen-label="Tarifs" style="max-width:1200px; margin:0 auto; padding:80px 40px 96px">
+
+    <h1 style="font-size:clamp(42px,6vw,76px); font-weight:700; letter-spacing:-0.045em; line-height:1.02; margin:0 0 18px; text-align:center">Tarifs simples.</h1>
+    <p style="color:#9a9aa6; font-size:18px; margin:0 auto 72px; text-align:center; max-width:520px">Commencez gratuitement, passez en Pro quand vous êtes prêt. Sans engagement.</p>
+
+    <!-- ══════════ CARTES ══════════ -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); gap:20px; align-items:stretch; margin-bottom:96px">
+      <div style="border:1px solid rgba(255,255,255,0.08); border-radius:22px; padding:36px 32px; background:#0b0b10; display:flex; flex-direction:column">
+        <h2 style="font-size:16px; font-weight:600; margin:0 0 8px; color:#9a9aa6">Gratuit</h2>
+        <p style="font-size:44px; font-weight:700; letter-spacing:-0.03em; margin:0 0 8px">0&nbsp;€<span style="font-size:15px; color:#5a5a66; font-weight:500; letter-spacing:0"> /mois</span></p>
+        <p style="font-size:14px; color:#5a5a66; margin:0 0 24px">Pour découvrir et coder en solo.</p>
+        <div style="display:flex; flex-direction:column; gap:11px; font-size:15px; color:#9a9aa6; flex:1">
+          <span>50 requêtes / jour</span>
+          <span>Chat web</span>
+          <span>Modèle 7B standard</span>
+        </div>
+        <a href="/compte" style="margin-top:30px; text-align:center; text-decoration:none; color:#f2f3f7; border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:12px; font-weight:600; transition:border-color 0.2s" style-hover="border-color:rgba(255,255,255,0.4)">Commencer</a>
+      </div>
+      <div style="position:relative; border-radius:22px; padding:1px; background:linear-gradient(140deg, rgba(86,200,245,0.6), rgba(167,139,250,0.6)); display:flex">
+        <div style="border-radius:21px; padding:36px 32px; background:#0d0d14; display:flex; flex-direction:column; flex:1">
+          <span style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; font-size:11px; font-weight:700; padding:5px 14px; border-radius:999px; letter-spacing:0.06em">POPULAIRE</span>
+          <h2 style="font-size:16px; font-weight:600; margin:0 0 8px; color:#56c8f5">Pro</h2>
+          <p style="font-size:44px; font-weight:700; letter-spacing:-0.03em; margin:0 0 8px">19&nbsp;€<span style="font-size:15px; color:#5a5a66; font-weight:500; letter-spacing:0"> /mois</span></p>
+          <p style="font-size:14px; color:#5a5a66; margin:0 0 24px">Pour coder tous les jours, dans votre IDE.</p>
+          <div style="display:flex; flex-direction:column; gap:11px; font-size:15px; color:#d6d7de; flex:1">
+            <span>Requêtes illimitées</span>
+            <span>Extension IDE (VS Code, JetBrains)</span>
+            <span>Fine-tuning sur votre codebase</span>
+            <span>Support prioritaire</span>
+          </div>
+          <a href="/compte" style="margin-top:30px; text-align:center; text-decoration:none; color:#050507; background:linear-gradient(95deg,#56c8f5,#a78bfa); border-radius:999px; padding:12px; font-weight:600; transition:opacity 0.2s" style-hover="opacity:0.88">Passer Pro</a>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.08); border-radius:22px; padding:36px 32px; background:#0b0b10; display:flex; flex-direction:column">
+        <h2 style="font-size:16px; font-weight:600; margin:0 0 8px; color:#a78bfa">API</h2>
+        <p style="font-size:44px; font-weight:700; letter-spacing:-0.03em; margin:0 0 8px">Sur mesure</p>
+        <p style="font-size:14px; color:#5a5a66; margin:0 0 24px">Pour les équipes et l'on-premise.</p>
+        <div style="display:flex; flex-direction:column; gap:11px; font-size:15px; color:#9a9aa6; flex:1">
+          <span>Endpoint dédié</span>
+          <span>Déploiement local / on-premise</span>
+          <span>SLA entreprise</span>
+        </div>
+        <a href="/contact" style="margin-top:30px; text-align:center; text-decoration:none; color:#f2f3f7; border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:12px; font-weight:600; transition:border-color 0.2s" style-hover="border-color:rgba(167,139,250,0.6)">Nous contacter</a>
+      </div>
+    </div>
+
+    <!-- ══════════ COMPARATIF ══════════ -->
+    <h2 style="font-size:clamp(28px,3.5vw,40px); font-weight:700; letter-spacing:-0.03em; margin:0 0 32px">Comparer les plans.</h2>
+    <div style="border:1px solid rgba(255,255,255,0.08); border-radius:22px; overflow:hidden; margin-bottom:96px">
+      <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; font-size:14.5px">
+        <div style="padding:14px 20px; background:rgba(255,255,255,0.03)"></div>
+        <div style="padding:14px 20px; background:rgba(255,255,255,0.03); color:#9a9aa6; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Gratuit</div>
+        <div style="padding:14px 20px; background:rgba(255,255,255,0.03); color:#56c8f5; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Pro</div>
+        <div style="padding:14px 20px; background:rgba(255,255,255,0.03); color:#a78bfa; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">API</div>
+        <sc-for list="{{ comparatif }}" as="ligne" hint-placeholder-count="6">
+          <div style="padding:14px 20px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">{{ ligne.critere }}</div>
+          <div style="padding:14px 20px; border-top:1px solid rgba(255,255,255,0.06); color:#d6d7de">{{ ligne.gratuit }}</div>
+          <div style="padding:14px 20px; border-top:1px solid rgba(255,255,255,0.06); color:#d6d7de">{{ ligne.pro }}</div>
+          <div style="padding:14px 20px; border-top:1px solid rgba(255,255,255,0.06); color:#d6d7de">{{ ligne.api }}</div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ══════════ FAQ ══════════ -->
+    <h2 style="font-size:clamp(28px,3.5vw,40px); font-weight:700; letter-spacing:-0.03em; margin:0 0 32px">Questions fréquentes.</h2>
+    <div style="display:flex; flex-direction:column; gap:12px; max-width:760px">
+      <sc-for list="{{ faq }}" as="item" hint-placeholder-count="4">
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:16px; background:#0b0b10; overflow:hidden">
+          <button onClick="{{ item.basculer }}" style="width:100%; display:flex; justify-content:space-between; align-items:center; gap:16px; text-align:left; background:transparent; border:none; padding:18px 22px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:16px; font-weight:600; cursor:pointer">
+            <span>{{ item.question }}</span>
+            <span style="color:#5a5a66; font-size:18px; flex:none">{{ item.signe }}</span>
+          </button>
+          <sc-if value="{{ item.ouvert }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0; padding:0 22px 20px; color:#9a9aa6; font-size:15px; line-height:1.65">{{ item.reponse }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06); padding:28px 40px">
+    <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center; font-size:13px; color:#5a5a66">
+      <span>© 2026 Henergyque. Tous droits réservés.</span>
+      <div style="display:flex; gap:24px; flex-wrap:wrap">
+        <a href="/blog" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Blog</a>
+        <a href="/statut" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut API</a>
+        <a href="/contact" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+        <a href="/cgu" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">CGU</a>
+        <a href="/confidentialite" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Confidentialité</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ouvert: -1, navReplie: false };
+
+  componentDidMount() {
+    this._surScroll = () => {
+      const replie = window.scrollY > 90;
+      if (replie !== this.state.navReplie) this.setState({ navReplie: replie });
+    };
+    window.addEventListener('scroll', this._surScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    if (this._surScroll) window.removeEventListener('scroll', this._surScroll);
+  }
+
+  donneesFaq = [
+    {
+      question: "Puis-je annuler à tout moment ?",
+      reponse: "Oui. Le plan Pro est sans engagement : l'annulation prend effet à la fin de la période en cours, et vous repassez automatiquement au plan Gratuit."
+    },
+    {
+      question: "Que se passe-t-il quand j'atteins la limite du plan Gratuit ?",
+      reponse: "Le chat reste accessible mais les nouvelles requêtes sont mises en attente jusqu'au lendemain. Passez en Pro pour des requêtes illimitées."
+    },
+    {
+      question: "Le fine-tuning sur ma codebase est-il confidentiel ?",
+      reponse: "Oui. Vos données d'entraînement restent isolées dans votre espace, ne sont jamais partagées, et vous pouvez les supprimer à tout moment. En déploiement on-premise, rien ne quitte votre infrastructure."
+    },
+    {
+      question: "Proposez-vous des tarifs pour les étudiants ou l'open source ?",
+      reponse: "Oui — contactez-nous avec une preuve de statut étudiant ou un lien vers votre projet open source pour bénéficier du plan Pro à tarif réduit."
+    }
+  ];
+
+  donneesComparatif = [
+    { critere: "Requêtes", gratuit: "50 / jour", pro: "Illimitées", api: "Selon contrat" },
+    { critere: "Tokens par requête", gratuit: "4 096", pro: "32 768", api: "Sur mesure" },
+    { critere: "Extension IDE", gratuit: "—", pro: "VS Code, JetBrains", api: "VS Code, JetBrains" },
+    { critere: "Fine-tuning codebase", gratuit: "—", pro: "Inclus", api: "Inclus + dédié" },
+    { critere: "Déploiement on-premise", gratuit: "—", pro: "—", api: "Inclus" },
+    { critere: "Support", gratuit: "Communauté", pro: "Prioritaire", api: "SLA entreprise" }
+  ];
+
+  renderVals() {
+    const r = this.state.navReplie;
+    return {
+      navDecalage: r ? 'translateX(-50px) scale(0.92)' : 'none',
+      navOpacite: r ? 0 : 1,
+      navMenuDecalage: r ? 'translateY(-8px)' : 'none',
+      navPointeurs: r ? 'none' : 'auto',
+      navFond: r ? 'transparent' : 'rgba(5,5,7,0.7)',
+      navFlou: r ? 'none' : 'blur(20px) saturate(1.4)',
+      navBordure: r ? 'transparent' : 'rgba(255,255,255,0.06)',
+      comparatif: this.donneesComparatif,
+      faq: this.donneesFaq.map((f, i) => ({
+        question: f.question,
+        reponse: f.reponse,
+        ouvert: this.state.ouvert === i,
+        signe: this.state.ouvert === i ? '−' : '+',
+        basculer: () => this.setState({ ouvert: this.state.ouvert === i ? -1 : i })
+      }))
+    };
+  }
+}
+</script>
+<script src="./hq-runtime.js"></script>
+</body>
+</html>

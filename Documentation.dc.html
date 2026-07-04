@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation — HenergyqueAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #050507; }
+    * { box-sizing: border-box; }
+    ::selection { background: rgba(86,200,245,0.28); }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:#050507; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav style="position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:14px 40px; transition:background 0.4s ease, border-color 0.4s ease; background:{{ navFond }}; backdrop-filter:{{ navFlou }}; -webkit-backdrop-filter:{{ navFlou }}; border-bottom:1px solid {{ navBordure }}">
+    <a href="HenergyqueAI v2.dc.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:#f2f3f7">
+      <img src="assets/logo-papillon.png" alt="HenergyqueAI" style="width:34px; height:34px; object-fit:contain; position:relative; z-index:1">
+      <span style="font-weight:600; font-size:16px; letter-spacing:-0.01em; display:inline-block; transition:transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; transform:{{ navDecalage }}; opacity:{{ navOpacite }}">HenergyqueAI</span>
+    </a>
+    <div style="display:flex; align-items:center; gap:28px; row-gap:8px; flex-wrap:wrap; font-size:13.5px; font-weight:500; transition:opacity 0.4s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1); opacity:{{ navOpacite }}; transform:{{ navMenuDecalage }}; pointer-events:{{ navPointeurs }}">
+      <a href="Chat.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Chat</a>
+      <a href="Documentation.dc.html" style="color:#f2f3f7; text-decoration:none">Documentation</a>
+      <a href="Tarifs.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Tarifs</a>
+      <a href="Statut.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut</a>
+      <a href="Contact.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+    </div>
+  </nav>
+
+  <div data-screen-label="Documentation" style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:220px 1fr; gap:56px; padding:56px 40px 96px; align-items:start">
+
+    <!-- ══════════ SOMMAIRE ══════════ -->
+    <aside style="position:sticky; top:96px; display:flex; flex-direction:column; gap:4px">
+      <input value="{{ requete }}" onChange="{{ surRequete }}" placeholder="Rechercher dans la doc…" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px 14px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:13.5px; outline:none; margin-bottom:14px; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+      <sc-if value="{{ enRecherche }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:2px; border:1px solid rgba(86,200,245,0.2); border-radius:12px; background:#0b0b10; padding:8px; margin-bottom:14px">
+          <sc-for list="{{ resultats }}" as="res" hint-placeholder-count="2">
+            <a href="{{ res.lien }}" style="color:#d6d7de; text-decoration:none; font-size:13.5px; padding:8px 10px; border-radius:8px; transition:background 0.2s" style-hover="background:rgba(86,200,245,0.08)">{{ res.titre }}</a>
+          </sc-for>
+          <sc-if value="{{ aucunResultat }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0; padding:8px 10px; font-size:13px; color:#5a5a66">Aucun résultat.</p>
+          </sc-if>
+        </div>
+      </sc-if>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#5a5a66; margin-bottom:10px">Sommaire</span>
+      <a href="#demarrage" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Démarrage rapide</a>
+      <a href="#authentification" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Authentification</a>
+      <a href="#sdks" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">SDKs officiels</a>
+      <a href="#requetes" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Envoyer une requête</a>
+      <a href="#parametres" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Paramètres</a>
+      <a href="#contexte" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Contexte de code</a>
+      <a href="#streaming" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Streaming</a>
+      <a href="#ide" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Extension IDE</a>
+      <a href="#erreurs" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Codes d'erreur</a>
+      <a href="#limites" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Limites &amp; quotas</a>
+      <a href="#bonnes-pratiques" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Bonnes pratiques</a>
+      <a href="#securite" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Sécurité</a>
+      <a href="#changelog" style="color:#9a9aa6; text-decoration:none; font-size:14px; padding:7px 12px; border-radius:8px; transition:color 0.2s, background 0.2s" style-hover="color:#f2f3f7; background:rgba(255,255,255,0.04)">Changelog</a>
+    </aside>
+
+    <!-- ══════════ CONTENU ══════════ -->
+    <main style="min-width:0; display:flex; flex-direction:column; gap:72px">
+
+      <div>
+        <h1 style="font-size:clamp(38px,5vw,60px); font-weight:700; letter-spacing:-0.04em; line-height:1.05; margin:0 0 18px">Documentation.</h1>
+        <p style="color:#9a9aa6; font-size:17px; line-height:1.6; margin:0; max-width:600px">Tout ce qu'il faut pour intégrer HenergyqueAI à votre workflow — en ligne de commande, par API ou directement dans votre IDE.</p>
+      </div>
+
+      <section id="demarrage">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Démarrage rapide</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Installez le client officiel, puis envoyez votre première requête en moins d'une minute.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">shell</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">pip install henergyque</pre>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">python</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6"><span style="color:#a78bfa">from</span> henergyque <span style="color:#a78bfa">import</span> Client
+
+client = <span style="color:#7ec8f0">Client</span>()
+reponse = client.chat(<span style="color:#6fce96">"Écris un tri fusion en Python"</span>)
+<span style="color:#7ec8f0">print</span>(reponse.texte)</pre>
+        </div>
+      </section>
+
+      <section id="authentification">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Authentification</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Chaque requête est authentifiée par une clé API, disponible dans votre espace personnel. Exposez-la via une variable d'environnement — jamais en dur dans le code.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">shell</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6"><span style="color:#7ec8f0">export</span> HENERGYQUE_API_KEY=<span style="color:#6fce96">"hq-…"</span></pre>
+        </div>
+        <div style="border:1px solid rgba(167,139,250,0.25); border-radius:14px; padding:14px 18px; background:rgba(167,139,250,0.05); font-size:14px; line-height:1.6; color:#c9cbd6">
+          La clé est liée à votre plan : les quotas du plan Gratuit s'appliquent automatiquement tant que vous n'êtes pas passé en Pro.
+        </div>
+      </section>
+
+      <section id="sdks">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">SDKs officiels</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Deux SDKs maintenus par Henergyque : Python (voir Démarrage rapide) et JavaScript / TypeScript. Les deux couvrent chat, streaming et gestion des erreurs.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">shell</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">npm install @henergyque/sdk</pre>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">typescript</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6"><span style="color:#a78bfa">import</span> { Client } <span style="color:#a78bfa">from</span> <span style="color:#6fce96">"@henergyque/sdk"</span>;
+
+<span style="color:#a78bfa">const</span> client = <span style="color:#a78bfa">new</span> <span style="color:#7ec8f0">Client</span>();
+<span style="color:#a78bfa">const</span> reponse = <span style="color:#a78bfa">await</span> client.chat(<span style="color:#6fce96">"Écris un debounce en TypeScript"</span>);
+console.<span style="color:#7ec8f0">log</span>(reponse.texte);</pre>
+        </div>
+      </section>
+
+      <section id="requetes">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Envoyer une requête</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">L'API expose un unique endpoint de chat. Envoyez l'historique des messages, recevez la réponse du modèle.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">curl</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">curl https://api.henergyque.ai/v1/chat \
+  -H <span style="color:#6fce96">"Authorization: Bearer $HENERGYQUE_API_KEY"</span> \
+  -H <span style="color:#6fce96">"Content-Type: application/json"</span> \
+  -d <span style="color:#6fce96">'{
+    "messages": [
+      { "role": "user", "content": "Écris un debounce en TypeScript" }
+    ],
+    "max_tokens": 1024
+  }'</span></pre>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#a78bfa">réponse · json</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">{
+  <span style="color:#7ec8f0">"role"</span>: <span style="color:#6fce96">"assistant"</span>,
+  <span style="color:#7ec8f0">"content"</span>: <span style="color:#6fce96">"```typescript\nfunction debounce…"</span>,
+  <span style="color:#7ec8f0">"usage"</span>: { <span style="color:#7ec8f0">"input_tokens"</span>: <span style="color:#e893c0">18</span>, <span style="color:#7ec8f0">"output_tokens"</span>: <span style="color:#e893c0">142</span> }
+}</pre>
+        </div>
+      </section>
+
+      <section id="parametres">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Paramètres</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Référence des champs acceptés par <span style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:#56c8f5">/v1/chat</span>.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden">
+          <div style="display:grid; grid-template-columns:150px 130px 1fr; font-size:14.5px">
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Champ</div>
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Type</div>
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Description</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#7ec8f0">messages</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">array · requis</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Historique de la conversation, objets <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6">{ role, content }</span>.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#7ec8f0">system</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">string</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Instructions globales : conventions, langage cible, style de réponse.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#7ec8f0">max_tokens</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">int · défaut 1024</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Longueur maximale de la réponse, dans la limite du plan.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#7ec8f0">temperature</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">float · défaut 0.2</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">0 = déterministe, 1 = créatif. Restez bas pour du code.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#7ec8f0">stream</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">bool · défaut false</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Réponse en flux SSE — voir la section Streaming.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contexte">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Contexte de code</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Joignez des fichiers à la requête pour que le modèle raisonne sur votre code réel — indispensable pour le debug et le refactoring.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">python</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">reponse = client.chat(
+    <span style="color:#6fce96">"Corrige le bug de pagination"</span>,
+    fichiers=[<span style="color:#6fce96">"src/api.py"</span>, <span style="color:#6fce96">"src/pagination.py"</span>]
+)</pre>
+        </div>
+        <div style="border:1px solid rgba(167,139,250,0.25); border-radius:14px; padding:14px 18px; background:rgba(167,139,250,0.05); font-size:14px; line-height:1.6; color:#c9cbd6">
+          Le contenu des fichiers compte dans les tokens de la requête. L'extension IDE sélectionne automatiquement les fichiers pertinents du projet ouvert.
+        </div>
+      </section>
+
+      <section id="streaming">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Streaming</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Ajoutez <span style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:#56c8f5">"stream": true</span> pour recevoir la réponse token par token (Server-Sent Events) — idéal pour afficher le code au fil de la génération.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c; margin-bottom:16px">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">python</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6"><span style="color:#a78bfa">for</span> morceau <span style="color:#a78bfa">in</span> client.chat(<span style="color:#6fce96">"Écris un tri fusion"</span>, stream=<span style="color:#e893c0">True</span>):
+    <span style="color:#7ec8f0">print</span>(morceau.texte, end=<span style="color:#6fce96">""</span>, flush=<span style="color:#e893c0">True</span>)</pre>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#a78bfa">flux · sse</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">event: delta
+data: { <span style="color:#7ec8f0">"texte"</span>: <span style="color:#6fce96">"function "</span> }
+
+event: delta
+data: { <span style="color:#7ec8f0">"texte"</span>: <span style="color:#6fce96">"debounce"</span> }
+
+event: fin
+data: { <span style="color:#7ec8f0">"usage"</span>: { <span style="color:#7ec8f0">"output_tokens"</span>: <span style="color:#e893c0">142</span> } }</pre>
+        </div>
+      </section>
+
+      <section id="ide">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Extension IDE</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">Disponible pour VS Code et JetBrains (plan Pro). Complétion en ligne, chat contextuel et refactoring directement dans l'éditeur.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; background:#08080c">
+          <div style="padding:7px 14px; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:11px; color:#56c8f5">vs code</div>
+          <pre style="margin:0; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#c9cbd6">code --install-extension henergyque.henergyque-ai</pre>
+        </div>
+      </section>
+
+      <section id="erreurs">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Codes d'erreur</h2>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.65; margin:0 0 20px">L'API utilise les codes HTTP standard. Le corps de la réponse contient toujours un champ <span style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:#56c8f5">"erreur"</span> détaillé.</p>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden">
+          <div style="display:grid; grid-template-columns:110px 1fr; font-size:14.5px">
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Code</div>
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Signification</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#e07a7a">401</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Clé API absente ou invalide. Vérifiez <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6">HENERGYQUE_API_KEY</span>.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#d9a13f">429</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Quota atteint (plan Gratuit) ou trop de requêtes simultanées. Réessayez avec un backoff exponentiel.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#d9a13f">422</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Requête mal formée — champ manquant ou <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6">max_tokens</span> au-delà de la limite du plan.</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); font-family:'JetBrains Mono',monospace; font-size:13px; color:#e07a7a">500</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Erreur interne. Consultez la <a href="Statut.dc.html" style="color:#56c8f5; text-decoration:none">page Statut</a> et réessayez.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="limites">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Limites &amp; quotas</h2>
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden">
+          <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; font-size:14.5px">
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#5a5a66; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600"></div>
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#9a9aa6; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Gratuit</div>
+            <div style="padding:13px 18px; background:rgba(255,255,255,0.03); color:#56c8f5; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600">Pro</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Requêtes</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">50 / jour</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">Illimitées</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Tokens par requête</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">4 096</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">32 768</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06); color:#9a9aa6">Requêtes simultanées</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">1</div>
+            <div style="padding:13px 18px; border-top:1px solid rgba(255,255,255,0.06)">8</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="bonnes-pratiques">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Bonnes pratiques</h2>
+        <div style="display:flex; flex-direction:column; gap:14px">
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 22px; background:#0b0b10">
+            <p style="margin:0 0 6px; font-size:15px; font-weight:600">Soyez précis sur le résultat attendu</p>
+            <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">« Écris un debounce en TypeScript, typé, sans dépendance » donne un meilleur résultat que « fais un debounce ».</p>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 22px; background:#0b0b10">
+            <p style="margin:0 0 6px; font-size:15px; font-weight:600">Donnez le contexte du projet</p>
+            <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Joignez les fichiers concernés ou décrivez la stack dans <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6">system</span> : framework, version, conventions.</p>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 22px; background:#0b0b10">
+            <p style="margin:0 0 6px; font-size:15px; font-weight:600">Itérez en conversation</p>
+            <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Gardez l'historique dans <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6">messages</span> et affinez : « ajoute la gestion d'erreur », « convertis en async ».</p>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 22px; background:#0b0b10">
+            <p style="margin:0 0 6px; font-size:15px; font-weight:600">Demandez les tests</p>
+            <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Terminez par « écris aussi les tests unitaires » — le modèle est entraîné à produire des tests cohérents avec son propre code.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="securite">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Sécurité &amp; confidentialité</h2>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:15px; line-height:1.65; color:#9a9aa6">
+          <p style="margin:0">Toutes les requêtes transitent en TLS 1.3. Votre code n'est <span style="color:#f2f3f7">jamais utilisé pour entraîner</span> les modèles partagés, et les requêtes ne sont pas conservées au-delà du traitement.</p>
+          <p style="margin:0">Les données de fine-tuning restent isolées dans votre espace et peuvent être supprimées à tout moment. Pour une confidentialité totale, le plan API permet un <span style="color:#f2f3f7">déploiement on-premise</span> : rien ne quitte votre infrastructure.</p>
+          <p style="margin:0">Révoquez ou régénérez vos clés API à tout moment depuis votre compte. Une clé compromise ? <a href="Contact.dc.html" style="color:#56c8f5; text-decoration:none">Contactez-nous</a>.</p>
+        </div>
+      </section>
+
+      <section id="changelog">
+        <h2 style="font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 14px">Changelog</h2>
+        <div style="display:flex; flex-direction:column">
+          <div style="display:flex; gap:20px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
+            <span style="flex:none; width:110px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66; padding-top:3px">juin 2026</span>
+            <div>
+              <p style="margin:0 0 4px; font-size:15px; font-weight:600">v1.4 — Streaming SSE</p>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Réponses en flux token par token sur l'API et les SDKs.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:20px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
+            <span style="flex:none; width:110px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66; padding-top:3px">avril 2026</span>
+            <div>
+              <p style="margin:0 0 4px; font-size:15px; font-weight:600">v1.3 — Extension JetBrains</p>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Support IntelliJ, PyCharm et WebStorm, en plus de VS Code.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:20px; padding:16px 0">
+            <span style="flex:none; width:110px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66; padding-top:3px">février 2026</span>
+            <div>
+              <p style="margin:0 0 4px; font-size:15px; font-weight:600">v1.2 — Fine-tuning codebase</p>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:#9a9aa6">Adaptez le modèle à vos conventions depuis le plan Pro.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06); padding:28px 40px">
+    <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center; font-size:13px; color:#5a5a66">
+      <span>© 2026 Henergyque. Tous droits réservés.</span>
+      <div style="display:flex; gap:24px; flex-wrap:wrap">
+        <a href="Blog.dc.html" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Blog</a>
+        <a href="Statut.dc.html" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut API</a>
+        <a href="Contact.dc.html" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+        <a href="CGU.dc.html" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">CGU</a>
+        <a href="Confidentialite.dc.html" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Confidentialité</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { navReplie: false, requete: '' };
+
+  surRequete = (e) => this.setState({ requete: e.target.value });
+
+  componentDidMount() {
+    // Index de recherche : titre + texte de chaque section
+    this._index = [];
+    document.querySelectorAll('main section').forEach(sec => {
+      const h2 = sec.querySelector('h2');
+      if (sec.id && h2) this._index.push({ id: sec.id, titre: h2.textContent, texte: sec.textContent.toLowerCase() });
+    });
+    this._surScroll = () => {
+      const replie = window.scrollY > 90;
+      if (replie !== this.state.navReplie) this.setState({ navReplie: replie });
+    };
+    window.addEventListener('scroll', this._surScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    if (this._surScroll) window.removeEventListener('scroll', this._surScroll);
+  }
+
+  renderVals() {
+    const r = this.state.navReplie;
+    const q = this.state.requete.trim().toLowerCase();
+    const resultats = (q && this._index)
+      ? this._index.filter(s => s.texte.includes(q)).map(s => ({ titre: s.titre, lien: '#' + s.id }))
+      : [];
+    return {
+      requete: this.state.requete,
+      surRequete: this.surRequete,
+      enRecherche: q.length > 0,
+      resultats,
+      aucunResultat: q.length > 0 && resultats.length === 0,
+      navDecalage: r ? 'translateX(-50px) scale(0.92)' : 'none',
+      navOpacite: r ? 0 : 1,
+      navMenuDecalage: r ? 'translateY(-8px)' : 'none',
+      navPointeurs: r ? 'none' : 'auto',
+      navFond: r ? 'transparent' : 'rgba(5,5,7,0.7)',
+      navFlou: r ? 'none' : 'blur(20px) saturate(1.4)',
+      navBordure: r ? 'transparent' : 'rgba(255,255,255,0.06)'
+    };
+  }
+}
+</script>
+</body>
+</html>

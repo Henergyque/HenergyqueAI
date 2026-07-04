@@ -1,0 +1,26 @@
+# Secrets
+.env.local
+.env
+MDP
+uploads/
+
+# Dossier IA complet (modèles, training, venv — trop lourds)
+HenergyqueAI/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.gguf
+*.bin
+*.safetensors
+
+# Node
+node_modules/
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db

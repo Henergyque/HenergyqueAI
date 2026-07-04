@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compte — HenergyqueAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #050507; }
+    * { box-sizing: border-box; }
+    ::selection { background: rgba(86,200,245,0.28); }
+    @keyframes hentree2 { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  </style>
+</helmet>
+
+<div style="min-height:100svh; display:flex; flex-direction:column; background:#050507; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:14px 40px; background:rgba(5,5,7,0.7); backdrop-filter:blur(20px) saturate(1.4); -webkit-backdrop-filter:blur(20px) saturate(1.4); border-bottom:1px solid rgba(255,255,255,0.06)">
+    <a href="HenergyqueAI v2.dc.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:#f2f3f7">
+      <img src="assets/logo-papillon.png" alt="HenergyqueAI" style="width:34px; height:34px; object-fit:contain">
+      <span style="font-weight:600; font-size:16px; letter-spacing:-0.01em">HenergyqueAI</span>
+    </a>
+    <div style="display:flex; align-items:center; gap:28px; row-gap:8px; flex-wrap:wrap; font-size:13.5px; font-weight:500">
+      <a href="Chat.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Chat</a>
+      <a href="Documentation.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Documentation</a>
+      <a href="Tarifs.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Tarifs</a>
+      <a href="Statut.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut</a>
+      <a href="Contact.dc.html" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ══════════ COMPTE ══════════ -->
+  <main data-screen-label="Compte" style="flex:1; display:flex; align-items:center; justify-content:center; padding:48px 24px">
+
+    <!-- Tableau de bord (connecté) -->
+    <sc-if value="{{ connecte }}" hint-placeholder-val="{{ false }}">
+      <div style="width:min(880px, 100%); animation:hentree2 0.8s cubic-bezier(0.16,1,0.3,1) both">
+        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:28px">
+          <img src="assets/logo-papillon.png" alt="" style="width:52px; height:52px; object-fit:contain">
+          <div>
+            <h1 style="font-size:clamp(26px,3.5vw,34px); font-weight:700; letter-spacing:-0.03em; margin:0">Bonjour, {{ nomSession }}.</h1>
+            <p style="color:#9a9aa6; font-size:14px; margin:2px 0 0">{{ emailSession }}</p>
+          </div>
+          <button onClick="{{ deconnecter }}" style="margin-left:auto; background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:9px 18px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Se déconnecter</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:16px">
+          <!-- Plan -->
+          <div style="border:1px solid {{ bordurePlan }}; border-radius:18px; padding:24px 26px; background:#0b0b10">
+            <p style="margin:0 0 10px; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Plan actuel</p>
+            <p style="margin:0 0 4px; font-size:26px; font-weight:700; letter-spacing:-0.02em; color:{{ couleurPlan }}">{{ nomPlan }}</p>
+            <p style="margin:0 0 18px; font-size:13.5px; color:#9a9aa6">{{ descPlan }}</p>
+            <sc-if value="{{ estGratuit }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ ouvrirPaiement }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:9px 20px; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">Passer en Pro — 19 €/mois</button>
+            </sc-if>
+            <sc-if value="{{ estPro }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ retrograder }}" style="background:transparent; border:1px solid rgba(255,255,255,0.14); border-radius:999px; padding:9px 20px; color:#9a9aa6; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Résilier l'abonnement</button>
+            </sc-if>
+          </div>
+          <!-- Usage -->
+          <div style="border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px 26px; background:#0b0b10">
+            <p style="margin:0 0 10px; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Usage aujourd'hui</p>
+            <p style="margin:0 0 14px; font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ usageJour }}<span style="font-size:15px; color:#5a5a66; font-weight:500"> {{ suffixeUsage }}</span></p>
+            <sc-if value="{{ estGratuit }}" hint-placeholder-val="{{ true }}">
+              <div style="height:8px; border-radius:999px; background:rgba(255,255,255,0.06); overflow:hidden; margin-bottom:12px">
+                <div style="height:100%; border-radius:999px; background:linear-gradient(90deg,#56c8f5,#a78bfa); width:{{ usagePourcent }}; transition:width 0.6s cubic-bezier(0.16,1,0.3,1)"></div>
+              </div>
+              <p style="margin:0; font-size:13px; color:#5a5a66">Le compteur se remet à zéro chaque jour à minuit.</p>
+            </sc-if>
+            <sc-if value="{{ estPro }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0; font-size:13px; color:#5a5a66">Aucune limite avec le plan Pro.</p>
+            </sc-if>
+          </div>
+        </div>
+
+        <!-- Paiement fictif -->
+        <sc-if value="{{ enPaiement }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius:18px; padding:1px; background:linear-gradient(140deg, rgba(86,200,245,0.6), rgba(167,139,250,0.6)); margin-bottom:16px">
+            <div style="border-radius:17px; padding:24px 26px; background:#0d0d14">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px">
+                <p style="margin:0; font-size:16px; font-weight:700">Passer en Pro — 19 €/mois</p>
+                <button onClick="{{ fermerPaiement }}" style="margin-left:auto; background:transparent; border:none; color:#5a5a66; font-size:16px; cursor:pointer; padding:4px 8px; transition:color 0.2s" style-hover="color:#f2f3f7">✕</button>
+              </div>
+              <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:12px">
+                <div style="display:flex; flex-direction:column; gap:6px">
+                  <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">Numéro de carte</label>
+                  <div style="position:relative">
+                    <input value="{{ carte }}" onChange="{{ surCarte }}" placeholder="4242 4242 4242 4242" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 78px 11px 14px; color:#f2f3f7; font-family:'JetBrains Mono',monospace; font-size:13.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+                    <sc-if value="{{ estVisa }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:#f2f3f7; border-radius:5px; padding:3px 8px; font-size:11px; font-weight:800; font-style:italic; letter-spacing:0.04em; color:#1a1f71; pointer-events:none">VISA</span>
+                    </sc-if>
+                    <sc-if value="{{ estMastercard }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); display:flex; align-items:center; background:#f2f3f7; border-radius:5px; padding:4px 8px; pointer-events:none">
+                        <span style="width:13px; height:13px; border-radius:50%; background:#eb001b"></span>
+                        <span style="width:13px; height:13px; border-radius:50%; background:#f79e1b; margin-left:-5px; mix-blend-mode:multiply"></span>
+                      </span>
+                    </sc-if>
+                    <sc-if value="{{ estAmex }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:#2e77bc; border-radius:5px; padding:3px 7px; font-size:10px; font-weight:800; letter-spacing:0.03em; color:#ffffff; pointer-events:none">AMEX</span>
+                    </sc-if>
+                    <sc-if value="{{ estCb }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:linear-gradient(135deg,#1c9ad6,#16635f); border-radius:5px; padding:3px 8px; font-size:11px; font-weight:800; letter-spacing:0.04em; color:#ffffff; pointer-events:none">CB</span>
+                    </sc-if>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:6px">
+                  <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">Expiration</label>
+                  <input value="{{ expiration }}" onChange="{{ surExpiration }}" placeholder="MM/AA" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; color:#f2f3f7; font-family:'JetBrains Mono',monospace; font-size:13.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:6px">
+                  <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">CVC</label>
+                  <input value="{{ cvc }}" onChange="{{ surCvc }}" placeholder="123" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; color:#f2f3f7; font-family:'JetBrains Mono',monospace; font-size:13.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+                </div>
+              </div>
+              <sc-if value="{{ erreurPaiement }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0 0 12px; font-size:13px; color:#e07a7a">{{ erreurPaiement }}</p>
+              </sc-if>
+              <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+                <button onClick="{{ payer }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:11px 26px; font-weight:600; font-size:14px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">Payer 19 € et activer Pro</button>
+                <p style="margin:0; font-size:12px; color:#5a5a66">Paiement fictif — aucune carte n'est débitée dans ce prototype.</p>
+              </div>
+
+              <!-- Emplacement réservé : intégration Stripe.
+                   Monter ici le Payment Element (stripe.elements().create('payment'))
+                   puis retirer les champs carte fictifs ci-dessus. -->
+              <div id="stripe-payment-element" style="margin-top:18px; border:1px dashed rgba(255,255,255,0.16); border-radius:12px; padding:16px 18px; display:flex; align-items:center; gap:12px">
+                <span style="flex:none; background:#635bff; color:#ffffff; font-size:12px; font-weight:700; letter-spacing:0.01em; border-radius:6px; padding:4px 10px">stripe</span>
+                <p style="margin:0; font-size:12.5px; line-height:1.5; color:#5a5a66">Emplacement réservé au paiement Stripe — le Payment Element sera monté ici (remplacera les champs ci-dessus).</p>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- Clé API -->
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px 26px; background:#0b0b10; margin-bottom:16px">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px">
+            <p style="margin:0; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#5a5a66">Clé API</p>
+            <a href="Documentation.dc.html#authentification" style="margin-left:auto; font-size:13px; color:#56c8f5; text-decoration:none; transition:opacity 0.2s" style-hover="opacity:0.75">Comment l'utiliser →</a>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+            <code style="flex:1; min-width:240px; font-family:'JetBrains Mono',monospace; font-size:13px; color:#c9cbd6; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:12px 16px; overflow-x:auto; white-space:nowrap">{{ cleAffichee }}</code>
+            <button onClick="{{ basculerCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#f2f3f7; border-color:rgba(255,255,255,0.3)">{{ libelleVoir }}</button>
+            <button onClick="{{ copierCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#56c8f5; border-color:rgba(86,200,245,0.5)">{{ libelleCopie }}</button>
+            <button onClick="{{ regenererCle }}" style="background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:11px 16px; color:#9a9aa6; font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Régénérer</button>
+          </div>
+          <p style="margin:12px 0 0; font-size:13px; color:#5a5a66">Régénérer la clé invalide immédiatement l'ancienne. Ne partagez jamais votre clé.</p>
+        </div>
+
+        <!-- Raccourcis -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+          <a href="Chat.dc.html" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(86,200,245,0.45)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Ouvrir le chat →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">Reprenez vos conversations.</p>
+          </a>
+          <a href="Documentation.dc.html" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(167,139,250,0.45)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Documentation →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">API, SDKs, extension IDE.</p>
+          </a>
+          <a href="Contact.dc.html" style="text-decoration:none; border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:20px 24px; background:#0b0b10; color:#f2f3f7; transition:border-color 0.25s" style-hover="border-color:rgba(255,255,255,0.3)">
+            <p style="margin:0 0 4px; font-size:15.5px; font-weight:600">Support →</p>
+            <p style="margin:0; font-size:13.5px; color:#9a9aa6">Une question ? Écrivez-nous.</p>
+          </a>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Formulaire (déconnecté) -->
+    <sc-if value="{{ pasConnecte }}" hint-placeholder-val="{{ true }}">
+      <div style="width:min(440px, 100%); animation:hentree2 0.8s cubic-bezier(0.16,1,0.3,1) both">
+        <div style="text-align:center; margin-bottom:28px">
+          <img src="assets/logo-papillon.png" alt="" style="width:60px; height:60px; object-fit:contain; margin-bottom:12px">
+          <h1 style="font-size:clamp(28px,4vw,36px); font-weight:700; letter-spacing:-0.035em; margin:0">{{ titre }}</h1>
+        </div>
+
+        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:22px; background:#0b0b10; padding:32px 28px">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; background:rgba(255,255,255,0.04); border-radius:999px; padding:4px; margin-bottom:26px">
+            <button onClick="{{ modeInscription }}" style="background:{{ fondOngletInscription }}; color:{{ couleurOngletInscription }}; border:none; border-radius:999px; padding:9px; font-family:'Instrument Sans',sans-serif; font-size:13.5px; font-weight:600; cursor:pointer; transition:background 0.25s, color 0.25s">Créer un compte</button>
+            <button onClick="{{ modeConnexion }}" style="background:{{ fondOngletConnexion }}; color:{{ couleurOngletConnexion }}; border:none; border-radius:999px; padding:9px; font-family:'Instrument Sans',sans-serif; font-size:13.5px; font-weight:600; cursor:pointer; transition:background 0.25s, color 0.25s">Se connecter</button>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <sc-if value="{{ estInscription }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-direction:column; gap:7px">
+                <label style="font-size:13px; font-weight:600; color:#9a9aa6">Nom</label>
+                <input value="{{ nom }}" onChange="{{ surNom }}" placeholder="Votre nom" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+              </div>
+            </sc-if>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <label style="font-size:13px; font-weight:600; color:#9a9aa6">E-mail</label>
+              <input value="{{ email }}" onChange="{{ surEmail }}" placeholder="vous@exemple.com" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <label style="font-size:13px; font-weight:600; color:#9a9aa6">Mot de passe</label>
+              <input type="password" value="{{ mdp }}" onChange="{{ surMdp }}" onKeyDown="{{ surTouche }}" placeholder="8 caractères minimum" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 16px; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; font-size:14.5px; outline:none; transition:border-color 0.2s" style-focus="border-color:rgba(86,200,245,0.5)">
+            </div>
+            <sc-if value="{{ erreur }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0; font-size:13.5px; color:#e07a7a">{{ erreur }}</p>
+            </sc-if>
+            <button onClick="{{ valider }}" style="margin-top:4px; background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:14px; font-weight:600; font-size:15px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">{{ libelleBouton }}</button>
+          </div>
+        </div>
+        <p style="text-align:center; font-size:12px; color:#5a5a66; margin-top:16px">Prototype — le compte est enregistré uniquement dans ce navigateur.</p>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { mode: 'inscription', nom: '', email: '', mdp: '', erreur: '', session: null, cleVisible: false, copie: false, plan: 'gratuit', enPaiement: false, carte: '', expiration: '', cvc: '', erreurPaiement: '' };
+
+  componentDidMount() {
+    try {
+      const s = localStorage.getItem('hq_session');
+      const plan = localStorage.getItem('hq_plan') || 'gratuit';
+      this.setState({ plan, session: s ? JSON.parse(s) : null });
+    } catch (e) {}
+  }
+
+  surCarte = (e) => {
+    const chiffres = e.target.value.replace(/\D/g, '').slice(0, 16);
+    this.setState({ carte: (chiffres.match(/.{1,4}/g) || []).join(' ') });
+  };
+  surExpiration = (e) => {
+    const chiffres = e.target.value.replace(/\D/g, '').slice(0, 4);
+    this.setState({ expiration: chiffres.length > 2 ? chiffres.slice(0, 2) + '/' + chiffres.slice(2) : chiffres });
+  };
+  surCvc = (e) => this.setState({ cvc: e.target.value.replace(/\D/g, '').slice(0, 4) });
+
+  marqueCarte() {
+    const n = this.state.carte.replace(/\s/g, '');
+    if (!n) return '';
+    if (/^49/.test(n)) return 'cb';            // BIN français courant → CB
+    if (/^4/.test(n)) return 'visa';
+    if (/^(5[1-5]|2[2-7])/.test(n)) return 'mastercard';
+    if (/^3[47]/.test(n)) return 'amex';
+    return '';
+  }
+
+  payer = () => {
+    const { carte, expiration, cvc } = this.state;
+    if (carte.replace(/\s/g, '').length < 16 || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiration.trim()) || cvc.trim().length < 3) {
+      this.setState({ erreurPaiement: 'Vérifiez les informations de carte (16 chiffres, MM/AA, CVC).' });
+      return;
+    }
+    localStorage.setItem('hq_plan', 'pro');
+    this.setState({ plan: 'pro', enPaiement: false, erreurPaiement: '', carte: '', expiration: '', cvc: '' });
+  };
+
+  retrograder = () => {
+    localStorage.setItem('hq_plan', 'gratuit');
+    this.setState({ plan: 'gratuit' });
+  };
+
+  surNom = (e) => this.setState({ nom: e.target.value });
+  surEmail = (e) => this.setState({ email: e.target.value });
+  surMdp = (e) => this.setState({ mdp: e.target.value });
+  surTouche = (e) => { if (e.key === 'Enter') this.valider(); };
+
+  lireCompte() {
+    try { return JSON.parse(localStorage.getItem('hq_compte') || 'null'); } catch (e) { return null; }
+  }
+
+  genererCle() {
+    let hex = '';
+    for (let i = 0; i < 24; i++) hex += '0123456789abcdef'[Math.floor(Math.random() * 16)];
+    return 'hq_live_' + hex;
+  }
+
+  obtenirCle() {
+    let cle = localStorage.getItem('hq_cle');
+    if (!cle) { cle = this.genererCle(); localStorage.setItem('hq_cle', cle); }
+    return cle;
+  }
+
+  regenererCle = () => {
+    localStorage.setItem('hq_cle', this.genererCle());
+    this.setState({ cleVisible: true, copie: false });
+  };
+
+  basculerCle = () => this.setState({ cleVisible: !this.state.cleVisible });
+
+  copierCle = () => {
+    navigator.clipboard.writeText(this.obtenirCle()).then(() => {
+      this.setState({ copie: true });
+      setTimeout(() => this.setState({ copie: false }), 1600);
+    });
+  };
+
+  usageDuJour() {
+    const cle = 'hq_usage_' + new Date().toISOString().slice(0, 10);
+    return parseInt(localStorage.getItem(cle) || '0', 10);
+  }
+
+  valider = () => {
+    const { mode, nom, email, mdp } = this.state;
+    const mail = email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) {
+      this.setState({ erreur: 'Adresse e-mail invalide.' });
+      return;
+    }
+    if (mode === 'inscription') {
+      if (!nom.trim()) { this.setState({ erreur: 'Merci d\'indiquer votre nom.' }); return; }
+      if (mdp.length < 8) { this.setState({ erreur: 'Le mot de passe doit faire au moins 8 caractères.' }); return; }
+      const compte = { nom: nom.trim(), email: mail, mdp };
+      localStorage.setItem('hq_compte', JSON.stringify(compte));
+      const session = { nom: compte.nom, email: compte.email };
+      localStorage.setItem('hq_session', JSON.stringify(session));
+      this.setState({ session, erreur: '', mdp: '' });
+    } else {
+      const compte = this.lireCompte();
+      if (!compte || compte.email !== mail || compte.mdp !== mdp) {
+        this.setState({ erreur: 'E-mail ou mot de passe incorrect.' });
+        return;
+      }
+      const session = { nom: compte.nom, email: compte.email };
+      localStorage.setItem('hq_session', JSON.stringify(session));
+      this.setState({ session, erreur: '', mdp: '' });
+    }
+  };
+
+  deconnecter = () => {
+    localStorage.removeItem('hq_session');
+    this.setState({ session: null, mdp: '' });
+  };
+
+  renderVals() {
+    const inscription = this.state.mode === 'inscription';
+    const session = this.state.session;
+    const cle = session ? this.obtenirCle() : '';
+    const pro = this.state.plan === 'pro';
+    const usage = session ? (pro ? this.usageDuJour() : Math.min(50, this.usageDuJour())) : 0;
+    return {
+      estGratuit: !pro,
+      estPro: pro,
+      nomPlan: pro ? 'Pro' : 'Gratuit',
+      couleurPlan: pro ? '#56c8f5' : '#f2f3f7',
+      bordurePlan: pro ? 'rgba(86,200,245,0.35)' : 'rgba(255,255,255,0.08)',
+      descPlan: pro ? 'Requêtes illimitées · extension IDE · fine-tuning' : '50 requêtes / jour · modèle 7B standard',
+      suffixeUsage: pro ? 'requêtes (illimité)' : '/ 50 requêtes',
+      enPaiement: this.state.enPaiement,
+      ouvrirPaiement: () => this.setState({ enPaiement: true }),
+      fermerPaiement: () => this.setState({ enPaiement: false, erreurPaiement: '' }),
+      carte: this.state.carte,
+      estVisa: this.marqueCarte() === 'visa',
+      estMastercard: this.marqueCarte() === 'mastercard',
+      estAmex: this.marqueCarte() === 'amex',
+      estCb: this.marqueCarte() === 'cb',
+      expiration: this.state.expiration,
+      cvc: this.state.cvc,
+      erreurPaiement: this.state.erreurPaiement,
+      surCarte: this.surCarte,
+      surExpiration: this.surExpiration,
+      surCvc: this.surCvc,
+      payer: this.payer,
+      retrograder: this.retrograder,
+      connecte: !!session,
+      pasConnecte: !session,
+      nomSession: session ? session.nom : '',
+      emailSession: session ? session.email : '',
+      usageJour: usage,
+      usagePourcent: (usage / 50 * 100) + '%',
+      cleAffichee: this.state.cleVisible ? cle : 'hq_live_••••••••••••••••••••',
+      libelleVoir: this.state.cleVisible ? 'Masquer' : 'Afficher',
+      libelleCopie: this.state.copie ? '✓ Copié' : 'Copier',
+      basculerCle: this.basculerCle,
+      copierCle: this.copierCle,
+      regenererCle: this.regenererCle,
+      estInscription: inscription,
+      titre: inscription ? 'Créez votre compte.' : 'Bon retour.',
+      libelleBouton: inscription ? 'Créer mon compte' : 'Se connecter',
+      nom: this.state.nom,
+      email: this.state.email,
+      mdp: this.state.mdp,
+      erreur: this.state.erreur,
+      surNom: this.surNom,
+      surEmail: this.surEmail,
+      surMdp: this.surMdp,
+      surTouche: this.surTouche,
+      valider: this.valider,
+      deconnecter: this.deconnecter,
+      modeInscription: () => this.setState({ mode: 'inscription', erreur: '' }),
+      modeConnexion: () => this.setState({ mode: 'connexion', erreur: '' }),
+      fondOngletInscription: inscription ? '#f2f3f7' : 'transparent',
+      couleurOngletInscription: inscription ? '#050507' : '#9a9aa6',
+      fondOngletConnexion: !inscription ? '#f2f3f7' : 'transparent',
+      couleurOngletConnexion: !inscription ? '#050507' : '#9a9aa6'
+    };
+  }
+}
+</script>
+</body>
+</html>

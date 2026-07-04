@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog — HenergyqueAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #050507; }
+    * { box-sizing: border-box; }
+    ::selection { background: rgba(86,200,245,0.28); }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:#050507; color:#f2f3f7; font-family:'Instrument Sans',sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav style="position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:14px 40px; transition:background 0.4s ease, border-color 0.4s ease; background:{{ navFond }}; backdrop-filter:{{ navFlou }}; -webkit-backdrop-filter:{{ navFlou }}; border-bottom:1px solid {{ navBordure }}">
+    <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:#f2f3f7">
+      <img src="assets/logo-papillon.png" alt="HenergyqueAI" style="width:34px; height:34px; object-fit:contain; position:relative; z-index:1">
+      <span style="font-weight:600; font-size:16px; letter-spacing:-0.01em; display:inline-block; transition:transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; transform:{{ navDecalage }}; opacity:{{ navOpacite }}">HenergyqueAI</span>
+    </a>
+    <div style="display:flex; align-items:center; gap:28px; row-gap:8px; flex-wrap:wrap; font-size:13.5px; font-weight:500; transition:opacity 0.4s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1); opacity:{{ navOpacite }}; transform:{{ navMenuDecalage }}; pointer-events:{{ navPointeurs }}">
+      <a href="/chat" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Chat</a>
+      <a href="/documentation" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Documentation</a>
+      <a href="/tarifs" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Tarifs</a>
+      <a href="/statut" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Statut</a>
+      <a href="/contact" style="color:#9a9aa6; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+    </div>
+  </nav>
+
+  <main data-screen-label="Blog" style="max-width:760px; margin:0 auto; padding:80px 24px 96px">
+
+    <h1 style="font-size:clamp(42px,6vw,72px); font-weight:700; letter-spacing:-0.045em; line-height:1.02; margin:0 0 16px">Actualités.</h1>
+    <p style="color:#9a9aa6; font-size:17px; margin:0 0 72px">Nouveautés produit, coulisses du modèle et conseils d'utilisation.</p>
+
+    <div style="display:flex; flex-direction:column; gap:56px">
+
+      <article style="border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:56px">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.08em; color:#56c8f5; text-transform:uppercase; background:rgba(86,200,245,0.08); border:1px solid rgba(86,200,245,0.25); padding:4px 12px; border-radius:999px">Produit</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66">18 juin 2026</span>
+        </div>
+        <h2 style="font-size:clamp(26px,3.5vw,36px); font-weight:700; letter-spacing:-0.03em; line-height:1.15; margin:0 0 16px">Le streaming arrive sur l'API</h2>
+        <p style="color:#b9bac4; font-size:16px; line-height:1.7; margin:0 0 14px">Avec la v1.4, les réponses arrivent token par token via Server-Sent Events, sur l'API comme dans les SDKs Python et TypeScript. Le premier caractère de code s'affiche désormais en moins de 300 ms.</p>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.7; margin:0 0 20px">C'était la demande n°1 des développeurs qui intègrent HenergyqueAI dans leurs outils internes. Activez-le simplement avec <span style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:#c9cbd6">"stream": true</span> — le format des événements est décrit dans la documentation.</p>
+        <a href="Documentation.dc.html#streaming" style="color:#56c8f5; text-decoration:none; font-size:14.5px; font-weight:500; transition:opacity 0.2s" style-hover="opacity:0.75">Lire la doc streaming →</a>
+      </article>
+
+      <article style="border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:56px">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.08em; color:#a78bfa; text-transform:uppercase; background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.25); padding:4px 12px; border-radius:999px">Coulisses</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66">30 avril 2026</span>
+        </div>
+        <h2 style="font-size:clamp(26px,3.5vw,36px); font-weight:700; letter-spacing:-0.03em; line-height:1.15; margin:0 0 16px">Pourquoi un modèle 7B spécialisé bat un généraliste géant</h2>
+        <p style="color:#b9bac4; font-size:16px; line-height:1.7; margin:0 0 14px">Un modèle compact entraîné exclusivement sur du code n'a pas à « penser » à la poésie ou à la cuisine : chaque paramètre sert la génération, le refactoring et le debug. Résultat : des réponses plus rapides, moins chères, et exécutables en local.</p>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.7; margin:0 0 20px">Dans cet article, on détaille nos choix de jeux de données, notre pipeline de fine-tuning et les benchmarks internes qui nous ont convaincus de parier sur la spécialisation plutôt que sur la taille.</p>
+        <a href="/documentation" style="color:#56c8f5; text-decoration:none; font-size:14.5px; font-weight:500; transition:opacity 0.2s" style-hover="opacity:0.75">Découvrir le modèle →</a>
+      </article>
+
+      <article>
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.08em; color:#56c8f5; text-transform:uppercase; background:rgba(86,200,245,0.08); border:1px solid rgba(86,200,245,0.25); padding:4px 12px; border-radius:999px">Produit</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#5a5a66">12 février 2026</span>
+        </div>
+        <h2 style="font-size:clamp(26px,3.5vw,36px); font-weight:700; letter-spacing:-0.03em; line-height:1.15; margin:0 0 16px">Fine-tuning sur votre codebase : disponible en Pro</h2>
+        <p style="color:#b9bac4; font-size:16px; line-height:1.7; margin:0 0 14px">Le modèle apprend vos conventions — nommage, architecture, bibliothèques maison — et génère du code qui ressemble à celui de votre équipe, pas à celui d'internet.</p>
+        <p style="color:#9a9aa6; font-size:15.5px; line-height:1.7; margin:0 0 20px">Vos données d'entraînement restent isolées dans votre espace et supprimables à tout moment. Comptez une heure entre l'import du dépôt et le modèle adapté prêt à l'emploi.</p>
+        <a href="/tarifs" style="color:#56c8f5; text-decoration:none; font-size:14.5px; font-weight:500; transition:opacity 0.2s" style-hover="opacity:0.75">Voir le plan Pro →</a>
+      </article>
+    </div>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06); padding:28px 40px">
+    <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center; font-size:13px; color:#5a5a66">
+      <span>© 2026 Henergyque. Tous droits réservés.</span>
+      <div style="display:flex; gap:24px; flex-wrap:wrap">
+        <a href="/cgu" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">CGU</a>
+        <a href="/confidentialite" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Confidentialité</a>
+        <a href="/contact" style="color:#7a7a86; text-decoration:none; transition:color 0.2s" style-hover="color:#f2f3f7">Contact</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { navReplie: false };
+
+  componentDidMount() {
+    this._surScroll = () => {
+      const replie = window.scrollY > 90;
+      if (replie !== this.state.navReplie) this.setState({ navReplie: replie });
+    };
+    window.addEventListener('scroll', this._surScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    if (this._surScroll) window.removeEventListener('scroll', this._surScroll);
+  }
+
+  renderVals() {
+    const r = this.state.navReplie;
+    return {
+      navDecalage: r ? 'translateX(-50px) scale(0.92)' : 'none',
+      navOpacite: r ? 0 : 1,
+      navMenuDecalage: r ? 'translateY(-8px)' : 'none',
+      navPointeurs: r ? 'none' : 'auto',
+      navFond: r ? 'transparent' : 'rgba(5,5,7,0.7)',
+      navFlou: r ? 'none' : 'blur(20px) saturate(1.4)',
+      navBordure: r ? 'transparent' : 'rgba(255,255,255,0.06)'
+    };
+  }
+}
+</script>
+<script src="./hq-runtime.js"></script>
+</body>
+</html>

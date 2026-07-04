@@ -1,0 +1,25 @@
+{
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/",                "destination": "/index.html" },
+    { "source": "/chat",            "destination": "/chat.html" },
+    { "source": "/compte",          "destination": "/compte.html" },
+    { "source": "/tarifs",          "destination": "/tarifs.html" },
+    { "source": "/blog",            "destination": "/blog.html" },
+    { "source": "/contact",         "destination": "/contact.html" },
+    { "source": "/documentation",   "destination": "/documentation.html" },
+    { "source": "/statut",          "destination": "/statut.html" },
+    { "source": "/cgu",             "destination": "/cgu.html" },
+    { "source": "/confidentialite", "destination": "/confidentialite.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "https://henergyqueai.fr" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
+  ]
+}
