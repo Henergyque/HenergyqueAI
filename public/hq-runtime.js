@@ -15,7 +15,42 @@
     document.head.appendChild(s);
   }
 
-  /* ── 2. Charger Stripe.js + SDK Supabase depuis CDN ───────────────── */
+  /* ── 2. Shim window.claude.complete() — défini immédiatement ──────── */
+  window.claude = {
+    complete: async function (opts) {
+      const { system, messages, max_tokens } = opts;
+
+      let token = null;
+      try {
+        if (window.supabaseClient) {
+          const { data } = await window.supabaseClient.auth.getSession();
+          token = data?.session?.access_token ?? null;
+        }
+      } catch (_) {}
+
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ system, messages, max_tokens: max_tokens || 1200 }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err || 'Erreur serveur');
+      }
+
+      const data = await res.json();
+      return data.content;
+    },
+  };
+
+  /* Pré-chauffer Modal immédiatement */
+  fetch('/api/warmup').catch(() => {});
+
+  /* ── 3. Charger Stripe.js + SDK Supabase depuis CDN ───────────────── */
   loadScript('https://js.stripe.com/v3/', function () {
     window._stripeInstance = window.Stripe(STRIPE_PUB_KEY);
   });
@@ -24,36 +59,6 @@
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
     function () {
       window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-      /* ── 2. Shim window.claude.complete() ──────────────────────────── */
-      window.claude = {
-        complete: async function (opts) {
-          const { system, messages, max_tokens } = opts;
-
-          let token = null;
-          try {
-            const { data } = await window.supabaseClient.auth.getSession();
-            token = data?.session?.access_token ?? null;
-          } catch (_) {}
-
-          const headers = { 'Content-Type': 'application/json' };
-          if (token) headers['Authorization'] = 'Bearer ' + token;
-
-          const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ system, messages, max_tokens: max_tokens || 1200 }),
-          });
-
-          if (!res.ok) {
-            const err = await res.text();
-            throw new Error(err || 'Erreur serveur');
-          }
-
-          const data = await res.json();
-          return data.content;
-        },
-      };
 
       /* ── 3. Exposer des helpers auth utilisés dans les pages ─────── */
       window.hqAuth = {
@@ -141,10 +146,7 @@
         },
       };
 
-      /* ── 4. Pré-chauffer le serveur IA en arrière-plan ─────────────── */
-      fetch('/api/warmup').catch(() => {});
-
-      /* ── 5. Émettre un événement pour signaler que le runtime est prêt */
+      /* ── 4. Émettre un événement pour signaler que le runtime est prêt */
       document.dispatchEvent(new Event('hq-runtime-ready'));
     }
   );
