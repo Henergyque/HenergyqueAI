@@ -539,7 +539,7 @@ class Component extends DCLogic {
       reponse = await window.claude.complete({
         system: "Tu es HenergyqueAI, un assistant de code IA spécialisé, basé sur un modèle 7B fine-tuné par Henergyque. Tu réponds en français, de façon concise et experte. Tu mets TOUJOURS le code dans des blocs markdown ```lang. Tu es spécialisé en programmation : si on te pose une question hors code, ramène poliment vers le code. Réponses courtes : 1-3 phrases d'explication max autour du code.",
         messages: messages.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.texte })),
-        max_tokens: 1200
+        max_tokens: 600
       });
     } catch (err) {
       reponse = "⚠️ Impossible de joindre le modèle pour le moment. Réessayez dans un instant.";
