@@ -141,7 +141,10 @@
         },
       };
 
-      /* ── 4. Émettre un événement pour signaler que le runtime est prêt */
+      /* ── 4. Pré-chauffer le serveur IA en arrière-plan ─────────────── */
+      fetch('/api/warmup').catch(() => {});
+
+      /* ── 5. Émettre un événement pour signaler que le runtime est prêt */
       document.dispatchEvent(new Event('hq-runtime-ready'));
     }
   );
