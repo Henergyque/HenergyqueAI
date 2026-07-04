@@ -94,7 +94,21 @@ module.exports = async function handler(req, res) {
   }
 
   const qwenData = await qwenResp.json();
-  const content = qwenData.choices?.[0]?.message?.content ?? '';
+  let content = qwenData.choices?.[0]?.message?.content ?? '';
+
+  /* Couper dès que le modèle commence à halluciner du README ou des fausses conversations */
+  const cutPatterns = [
+    /\n\.\/README/i,
+    /\n#\s*HenergyqueAI/i,
+    /\n##\s*Fonctionnali/i,
+    /\nuser\s*:/i,
+    /\nassistant\s*:/i,
+    /\n##\s*Exemple/i,
+  ];
+  for (const p of cutPatterns) {
+    const m = content.search(p);
+    if (m !== -1) content = content.slice(0, m).trimEnd();
+  }
 
   /* ── Incrémenter le compteur d'usage ──────────────────────────────── */
   if (userId) {
