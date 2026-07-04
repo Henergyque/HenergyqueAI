@@ -98,7 +98,7 @@ module.exports = async function handler(req, res) {
 
   /* Couper dès que le modèle commence à halluciner du README ou des fausses conversations */
   const cutPatterns = [
-    /\n\.\/README/i,
+    /\n\.?\/?README/i,
     /\n#\s*HenergyqueAI/i,
     /\n##\s*Fonctionnali/i,
     /\nuser\s*:/i,
