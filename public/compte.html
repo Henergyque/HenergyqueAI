@@ -60,7 +60,10 @@
             <p style="margin:0 0 4px; font-size:26px; font-weight:700; letter-spacing:-0.02em; color:{{ couleurPlan }}">{{ nomPlan }}</p>
             <p style="margin:0 0 18px; font-size:13.5px; color:#9a9aa6">{{ descPlan }}</p>
             <sc-if value="{{ estGratuit }}" hint-placeholder-val="{{ true }}">
-              <button onClick="{{ ouvrirPaiement }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:9px 20px; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">Passer en Pro — 19 €/mois</button>
+              <button onClick="{{ ouvrirPaiement }}" style="background:linear-gradient(95deg,#56c8f5,#a78bfa); color:#050507; border:none; border-radius:999px; padding:9px 20px; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:opacity 0.2s" style-hover="opacity:0.88">{{ libellePaiement }}</button>
+              <sc-if value="{{ erreurPaiement }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:8px 0 0; font-size:12.5px; color:#e07a7a">{{ erreurPaiement }}</p>
+              </sc-if>
             </sc-if>
             <sc-if value="{{ estPro }}" hint-placeholder-val="{{ false }}">
               <button onClick="{{ gererAbonnement }}" style="background:transparent; border:1px solid rgba(255,255,255,0.14); border-radius:999px; padding:9px 20px; color:#9a9aa6; font-weight:600; font-size:13.5px; font-family:'Instrument Sans',sans-serif; cursor:pointer; transition:color 0.2s, border-color 0.2s" style-hover="color:#e07a7a; border-color:rgba(224,122,122,0.5)">Gérer l'abonnement</button>
@@ -84,21 +87,22 @@
 
         <!-- ══ Panneau paiement Stripe Elements ══ -->
         <sc-if value="{{ enPaiement }}" hint-placeholder-val="{{ false }}">
-          <div style="border-radius:18px; padding:1px; background:linear-gradient(140deg, rgba(86,200,245,0.6), rgba(167,139,250,0.6)); margin-bottom:16px">
+          <div style="border-radius:18px; padding:1px; background:linear-gradient(140deg, #56c8f5, #a78bfa); margin-bottom:16px; box-shadow:0 0 40px rgba(86,200,245,0.12)">
             <div style="border-radius:17px; padding:24px 26px; background:#0d0d14">
               <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px">
                 <p style="margin:0; font-size:16px; font-weight:700">Passer en Pro — 19 €/mois</p>
                 <button onClick="{{ fermerPaiement }}" style="margin-left:auto; background:transparent; border:none; color:#5a5a66; font-size:16px; cursor:pointer; padding:4px 8px; transition:color 0.2s" style-hover="color:#f2f3f7">✕</button>
               </div>
 
-              <!-- Chargement du clientSecret -->
               <sc-if value="{{ chargementPaiement }}" hint-placeholder-val="{{ true }}">
                 <p style="margin:0 0 16px; font-size:14px; color:#5a5a66">Chargement du formulaire de paiement…</p>
               </sc-if>
+              <sc-if value="{{ erreurChargement }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0 0 16px; font-size:13px; color:#e07a7a">{{ erreurPaiement }}</p>
+              </sc-if>
 
-              <!-- 3 champs Stripe Elements (montés via JS dans componentDidUpdate) -->
               <sc-if value="{{ formulairePret }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:12px">
+                <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:16px">
                   <div style="display:flex; flex-direction:column; gap:6px">
                     <label style="font-size:12.5px; font-weight:600; color:#9a9aa6">Numéro de carte</label>
                     <div id="hq-stripe-card-number" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 14px; min-height:44px"></div>
@@ -225,7 +229,6 @@ class Component extends DCLogic {
     erreurPaiement: '', chargementPayer: false,
   };
 
-  /* refs Stripe internes (pas dans le state — pas besoin de re-render) */
   _clientSecret = null;
   _stripeElMounted = false;
   _cardNumber = null;
@@ -322,23 +325,18 @@ class Component extends DCLogic {
     const expEl = document.getElementById('hq-stripe-card-expiry');
     const cvcEl = document.getElementById('hq-stripe-card-cvc');
     if (!numEl || !expEl || !cvcEl) return;
-
     const style = {
       base: {
-        color: '#f2f3f7',
-        fontFamily: '"Instrument Sans", sans-serif',
-        fontSize: '13.5px',
-        fontSmoothing: 'antialiased',
+        color: '#f2f3f7', fontFamily: '"Instrument Sans", sans-serif',
+        fontSize: '13.5px', fontSmoothing: 'antialiased',
         '::placeholder': { color: '#5a5a66' },
       },
       invalid: { color: '#e07a7a', iconColor: '#e07a7a' },
     };
-
     const elements = stripe.elements();
     this._cardNumber = elements.create('cardNumber', { style, showIcon: true });
     this._cardExpiry = elements.create('cardExpiry', { style });
     this._cardCvc    = elements.create('cardCvc',    { style });
-
     this._cardNumber.mount(numEl);
     this._cardExpiry.mount(expEl);
     this._cardCvc.mount(cvcEl);
@@ -368,8 +366,6 @@ class Component extends DCLogic {
     if (error) {
       this.setState({ erreurPaiement: error.message, chargementPayer: false });
     } else {
-      /* Le webhook Stripe mettra le plan à jour dans Supabase.
-         On attend 1s puis on recharge le profil pour refléter le changement. */
       setTimeout(async () => {
         const profil = await window.hqAuth.getProfil();
         this._demontrerStripe();
@@ -436,10 +432,12 @@ class Component extends DCLogic {
       usagePourcent: pct,
 
       /* paiement */
+      libellePaiement: this.state.chargementPaiement ? 'Chargement…' : 'Passer en Pro — 19 €/mois',
       enPaiement: this.state.enPaiement,
       chargementPaiement: this.state.chargementPaiement,
       formulairePret: this.state.formulairePret,
       erreurPaiement: this.state.erreurPaiement,
+      erreurChargement: !this.state.formulairePret && !this.state.chargementPaiement && !!this.state.erreurPaiement,
       libellePayer: this.state.chargementPayer ? 'Traitement en cours…' : 'Payer 19 € et activer Pro',
       ouvrirPaiement: this.ouvrirPaiement,
       fermerPaiement: this.fermerPaiement,

@@ -11,21 +11,13 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-async function readRawBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    req.on('data', c => chunks.push(c));
-    req.on('end', () => resolve(Buffer.concat(chunks)));
-    req.on('error', reject);
-  });
-}
-
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
 
-  const rawBody = await readRawBody(req);
+  // express.raw() a déjà consommé le stream — req.body est un Buffer
+  const rawBody = req.body;
   const sig = req.headers['stripe-signature'];
 
   let event;
