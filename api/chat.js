@@ -76,9 +76,10 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: 'qwen2.5-coder-7b',
         messages: qwenMessages,
-        max_tokens: max_tokens || 1200,
+        max_tokens: max_tokens || 600,
         temperature: 0.3,
         stream: false,
+        stop: ['\nuser:', '\nUser:', '\nassistant:', '\nAssistant:', '# README', '<|im_end|>', '<|endoftext|>'],
       }),
     });
   } catch (err) {
